@@ -1,12 +1,13 @@
 import mongoose from "mongoose";
+import dotenv from "dotenv";
+
+
+dotenv.config()
 
 const dbconnection = () => {
-    mongoose.connect('mongodb://localhost:27017/NTI-Mohamed') // process.env.DB
+    mongoose.connect(process.env.DB!)
     .then(() => {
-        console.log("connect to database");
-    })
-    .catch((err) => {
-        console.log("error connecting to database", err)
+        console.log(`connect to ${process.env.DB}`);
     })
 }
 

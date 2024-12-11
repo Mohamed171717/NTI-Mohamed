@@ -1,8 +1,8 @@
 
 import { Request, Response , NextFunction } from "express";
-import asyncHandler from "express-async-handler";
-import { Subcategories } from "./subcategories.interface";
 import subcategoriesSchema from "./subcategories.schema";
+import { Subcategories } from "./subcategories.interface";
+import refactorService from "../refactor.service";
 
 
 class SubcategoriesService {
@@ -18,35 +18,15 @@ class SubcategoriesService {
         next();
     }
 
-    getAll = asyncHandler( async ( req: Request, res: Response, next: NextFunction ) => {
-            let filterData: any ={};
-            if( req.filterData ) filterData = req.filterData;
-            const subcategories: Subcategories[] = await subcategoriesSchema.find(filterData);
-            res.status(200).json({ data: subcategories });
-        }
-    )
+    getAllSubcategories = refactorService.getAll<Subcategories>(subcategoriesSchema);
 
-    createOne = asyncHandler( async  ( req: Request, res: Response, next: NextFunction) => {
-            const newSubCategory = await subcategoriesSchema.create(req.body)
-            res.status(201).json({ data: newSubCategory})
-        }
-    )
+    createSubcategory = refactorService.createOne<Subcategories>(subcategoriesSchema);
 
-    getOne = asyncHandler( async  ( req: Request, res: Response, next: NextFunction) => {
-            const newSubCategory: Subcategories | null = await subcategoriesSchema.findById(req.params.id)
-            res.status(200).json({ data: newSubCategory})
-        }
-    )
-    updateOne = asyncHandler( async  ( req: Request, res: Response, next: NextFunction) => {
-            const newSubCategory: Subcategories | null = await subcategoriesSchema.findByIdAndUpdate(req.params.id, req.body, {new: true})
-            res.status(200).json({ data: newSubCategory})
-        }
-    )
-    deleteOne = asyncHandler( async  ( req: Request, res: Response, next: NextFunction) => {
-            const newSubCategory: Subcategories | null = await subcategoriesSchema.findByIdAndDelete(req.params.id)
-            res.status(204).json()
-        }
-    )
+    getSubcategory = refactorService.getOne<Subcategories>(subcategoriesSchema);
+
+    updateSubcategory = refactorService.updateOne<Subcategories>(subcategoriesSchema);
+
+    deleteSubcategory = refactorService.deleteOne<Subcategories>(subcategoriesSchema);
 
 }
 

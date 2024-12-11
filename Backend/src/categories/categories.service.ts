@@ -1,39 +1,20 @@
 import { Request, Response , NextFunction } from "express";
 import { Categories } from "./categories.interface";
 import categoriesSchema from "./categories.schema";
-import asyncHandler from "express-async-handler";
+import refactorService from "../refactor.service";
 
 
 class CategoriesService {
 
-    getAll = asyncHandler(
-        async ( req: Request, res: Response, next: NextFunction ) => {
-        const categories: Categories[] = await categoriesSchema.find();
-        res.status(200).json({ data: categories });
-        }
-    )
+    getAllCategories = refactorService.getAll<Categories>(categoriesSchema);
 
-    createOne = asyncHandler( async  ( req: Request, res: Response, next: NextFunction) => {
-        const newCategory = await categoriesSchema.create(req.body)
-        res.status(201).json({ data: newCategory})
-        }
-    )
+    createCategory = refactorService.createOne<Categories>(categoriesSchema);
 
-    getOne = asyncHandler( async  ( req: Request, res: Response, next: NextFunction) => {
-        const newCategory: Categories | null = await categoriesSchema.findById(req.params.id)
-        res.status(200).json({ data: newCategory})
-        }
-    )
-    updateOne = asyncHandler( async  ( req: Request, res: Response, next: NextFunction) => {
-        const newCategory: Categories | null = await categoriesSchema.findByIdAndUpdate(req.params.id, req.body, {new: true})
-        res.status(200).json({ data: newCategory})
-        }
-    )
-    deleteOne = asyncHandler( async  ( req: Request, res: Response, next: NextFunction) => {
-        const newCategory: Categories | null = await categoriesSchema.findByIdAndDelete(req.params.id)
-        res.status(204).json()
-        }
-    )
+    getCategory = refactorService.getOne<Categories>(categoriesSchema);
+
+    updateCategory = refactorService.updateOne<Categories>(categoriesSchema);
+
+    deleteCategory = refactorService.deleteOne<Categories>(categoriesSchema);
 
 }
 

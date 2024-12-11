@@ -7,4 +7,4 @@ const CategoriesSchema = new mongoose.Schema<Categories>({
     image: String
 }, { timestamps: true}) // this is schema only
 
-export default mongoose.model<Categories>("Categories", CategoriesSchema)  // this is model used to handle schema "note!! <> is a generic types to know types of any thing"
+export default mongoose.model<Categories>("categories", CategoriesSchema)  // this is model used to handle schema "note!! <> is a generic types to know types of any thing"

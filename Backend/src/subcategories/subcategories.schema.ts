@@ -10,7 +10,7 @@ const subcategoriesSchema = new mongoose.Schema<Subcategories>({
 }, { timestamps: true}) // this is schema only
 
 subcategoriesSchema.pre<Subcategories>( /^find/, function (next) {
-    this.populate( {path: 'category', select: 'name'} )
+    this.populate( {path: 'category', select: 'name image'} )  // -_id
     next();
 })
 
