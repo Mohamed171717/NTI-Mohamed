@@ -14,7 +14,7 @@ class ProductsService {
 
     createProducts = refactorService.createOne<Products>(productsSchema);
 
-    getProducts = refactorService.getOne<Products>(productsSchema);
+    getProducts = refactorService.getOne<Products>(productsSchema, 'products', 'reviews');
 
     updateProducts = refactorService.updateOne<Products>(productsSchema);
 

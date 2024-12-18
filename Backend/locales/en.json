@@ -1,7 +1,12 @@
 {
     "--------------------------------------------------------------------": "Validation",
     "not_found": "Data not found",
+    "cart_not_found": "Your Cart Is Empty!",
+    "cart_not_found_already": "Your Cart Is Empty Already!",
     "invalid_id": "Invalid Id",
+    "invalid_review": "You Have A Review Already",
+    "can_not_review_U": "You Cannot Update This Review",
+    "can_not_review_D": "You Cannot Delete This Review",
     "failed_update": "Failed To Update Product",
     "validation_field": "Field Required",
     "validation_value": "Invalid Value",
@@ -23,8 +28,10 @@
     "check_code_verify": "Please verify your code first",
     "check_login": "You are not logged in! Please log in to get access.",
     "check_user": "The user does not exist anymore...",
+    "user_not_found": "The user does not exist...",
     "check_password_changed": "Your password has been updated since you logged in last time. Please log in again.",
     "check_active": "Your account is deactivated",
     "allowed_to": "Privilege denied! You cannot perform this action"
   }
+  
   

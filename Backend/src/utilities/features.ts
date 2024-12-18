@@ -1,11 +1,21 @@
 
 import mongoose from "mongoose";
 
+interface QueryString {
+    page?: number | any;  
+    limit?: number | any;  
+    sort?: string;         
+    fields?: string;    
+    search?: string;          
+    lang?: string;            
+    [key: string]: any;       
+}
+
 class Features {
 
     public paginationResults: any;
 
-constructor( public mongooseQuery: mongoose.Query<any[], any>, private readonly queryString: any) {
+constructor( public mongooseQuery: mongoose.Query<any[], any>, private readonly queryString: QueryString) {
 
 }
     filter() {
@@ -29,8 +39,8 @@ constructor( public mongooseQuery: mongoose.Query<any[], any>, private readonly 
     }
     // بيقسم الداتا
     pagination(documentCount: number) {    
-            const page = this.queryString.page * 1 || 1;
-            const limit = this.queryString.limit * 1 || 20;
+            const page = this.queryString.page! * 1 || 1;
+            const limit = this.queryString.limit! * 1 || 20;
             const skip = (page - 1) * limit ;
             const endIndex =  page * limit;
             const pagination: any = {};
@@ -70,6 +80,7 @@ constructor( public mongooseQuery: mongoose.Query<any[], any>, private readonly 
         } else this.mongooseQuery.select('-__v')
         return this;
     }
+
 
 }
 

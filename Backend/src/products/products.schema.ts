@@ -1,6 +1,7 @@
 
 import mongoose from "mongoose";
 import { Products } from "./products.interface";
+import reviewsSchema from "../reviews/reviews.schema";
 
 
 const productsSchema = new mongoose.Schema<Products>({
@@ -17,7 +18,9 @@ const productsSchema = new mongoose.Schema<Products>({
     rating: { type: Number, default: 0 },
     cover: String,
     images: [String]
-}, { timestamps: true}) // this is schema only
+}, { timestamps: true, toJSON:{virtuals: true}, toObject: { virtuals: true} }) // this is schema only
+
+productsSchema.virtual("reviews", {localField: "_id", foreignField: "product", ref: "reviews"})
 
 const imageUrl = ( document: Products) => {
     if (document.cover) document.cover = `${process.env.BASE_URL}/images/products/${document.cover}`;

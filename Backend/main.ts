@@ -4,13 +4,28 @@ import path from "path";
 import dotenv from "dotenv";
 import i18n from "i18n";
 import hpp from "hpp";
+import cors from "cors";
+import expressMongoSanitize from "express-mongo-sanitize";
+import helmet from "helmet";
+import compression from "compression";
+import cookieParser from "cookie-parser";
 import dbconnection from "./src/config/database";
 import mountRoutes from "./src";
 
 
+
 const app: express.Application = express();
 app.use(express.json({limit:"10kb"}))
-
+app.use(cors({
+    origin: ['http://localhost:4200'],
+    credentials: true,
+    allowedHeaders: ["X-CSRF-Token", "Content-Type", "Authorization"],
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"]
+}));
+app.use(expressMongoSanitize());
+app.use(helmet({crossOriginResourcePolicy: {policy: 'same-site'}}));
+app.use(compression());
+app.use(cookieParser());
 let server: Server;
 dotenv.config();
 app.use(express.static('uploads')); // for make image static not route 

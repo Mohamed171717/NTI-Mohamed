@@ -1,27 +1,29 @@
 import { Request, Response , NextFunction } from "express";
 import asyncHandler from "express-async-handler";
 import sharp from "sharp";
+import bcrypt from "bcryptjs";
 import usresSchema from "./users.schema";
 import refactorService from "../refactor.service";
 import ApiErrors from "../utilities/apiErrors";
 import { Users } from "./users.interface";
 import { uploadSingleFile } from "../middlewares/uploadFiles.middleware";
+import sanitization from "../utilities/sanitization";
 
 
 class UsersService {
 
-    getAllUsers = refactorService.getAll<Users>(usresSchema);
+    getAllUsers = refactorService.getAll<Users>(usresSchema, "users");
 
     createUsers = refactorService.createOne<Users>(usresSchema);
 
-    getUsers = refactorService.getOne<Users>(usresSchema);
+    getUsers = refactorService.getOne<Users>(usresSchema, "users");
 
     updateUsers = asyncHandler( async( req: Request, res: Response, next: NextFunction ) => {
         const user: Users | null = await usresSchema.findByIdAndUpdate( req.params.id, 
             { name: req.body.name, image: req.body.image, active: req.body.active}, 
             { new: true});
         if(!user) return next(new ApiErrors(`${req.__('not_found')}`, 404));
-        res.status(200).json({ data: user });
+        res.status(200).json({ data: sanitization.User(user) });
     })
     
     deleteUsers = refactorService.deleteOne<Users>(usresSchema);
@@ -29,11 +31,11 @@ class UsersService {
     changePassword = asyncHandler( async( req: Request, res: Response, next: NextFunction ) => {
         const user: Users | null = await usresSchema.findByIdAndUpdate( req.params.id, 
             { 
-                password: req.body.password, 
+                password: await bcrypt.hash(req.body.password, 13), 
                 passwordChangedAt: Date.now()
             },{ new: true});
         if(!user) return next(new ApiErrors(`${req.__('not_found')}`, 404));
-        res.status(200).json({ data: user });
+        res.status(200).json({ data: sanitization.User(user) });
     })
 
     uploadImage = uploadSingleFile( ['image'], 'image')

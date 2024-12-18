@@ -1,5 +1,5 @@
 
-import { Document } from "mongoose";
+import { Document, Schema } from "mongoose";
 
 export interface Users extends Document{
     userName: string;
@@ -9,12 +9,21 @@ export interface Users extends Document{
     active: boolean;
     googleId: string;
     hasPassword: boolean;
+    wishlist: Schema.Types.ObjectId [];
+    address: Address[];
     passwordChangedAt: Date | number;
     passwordResetCode: string | undefined;
     passwordResetCodeExpires: Date | number | undefined;
-    passwordResetCodeverfiy: boolean | undefined;
+    passwordResetCodeVerfiy: boolean | undefined;
     email: string;
-    image: string
+    image: string | undefined;
 }
 
 type Role =  "admin" | "employee" | "user"
+
+export type Address = {
+    street: string;
+    city: string;
+    state: string;
+    zipCode: string;
+}

@@ -3,7 +3,6 @@ import validatorMiddleware from "../middlewares/validator.middleware";
 import usersSchema from "./users.schema";
 import { body, param } from "express-validator";
 
-
 class UsersValidation {
     createOne = [ 
         body("username").notEmpty()
@@ -45,7 +44,8 @@ class UsersValidation {
     updateOne = [ 
         param("id").isMongoId().withMessage((val, {req}) => req.__('invalid_id')),
         body("name").optional()
-            .isLength({min: 2, max: 50}).withMessage((val, {req}) => req.__('validation_length_short'))
+        .isLength({min: 2, max: 50}).withMessage((val, {req}) => req.__('validation_length_short')),
+        body("active").optional().isBoolean().withMessage((val, {req}) => req.__('check_active'))
         , validatorMiddleware]
 
     deleteOne = [
